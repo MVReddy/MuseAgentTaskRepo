@@ -1,40 +1,58 @@
 
-"""Sample Google Ask Agent - v9: Logging + stats"""
+"""
+Sample Google Ask Agent - v1.0
+Daily-improved Python agent that simulates asking Google,
+with caching, history, batch queries, and stats.
+"""
 import argparse, logging
-from typing import List
+from typing import List, Dict
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger("ask_agent")
 
 class GoogleAskAgent:
-    """Ask Google (simulated), with cache, history and stats."""
-    VERSION = "0.9.0"
-    def __init__(self, name="AskAgent"):
-        self.name = name
-        self.history = []
-        self._cache = {}
+    """A tiny daily-evolving agent for asking Google (simulated)."""
+    VERSION = "1.0.0"
 
-    def _simulate_results(self, question: str):
+    def __init__(self, name: str = "AskAgent"):
+        self.name = name
+        self.history: List[Dict[str, str]] = []
+        self._cache: Dict[str, str] = {}
+
+    def _simulate_results(self, question: str) -> List[Dict]:
         base = question.strip().lower().replace(" ", "-")
         return [
             {"title": f"{question} - Overview", "url": f"https://example.com/{base}", "score": 0.95},
             {"title": f"{question} tutorial", "url": f"https://example.com/{base}-tutorial", "score": 0.82},
+            {"title": f"{question} FAQ", "url": f"https://example.com/{base}-faq", "score": 0.71},
         ]
 
     def ask(self, question: str) -> str:
+        """Ask one question, return best simulated result."""
         log.info("ask: %s", question)
         if not question or not question.strip():
             raise ValueError("question must be non-empty")
-        if question in self._cache:
-            log.info("cache hit")
-            return self._cache[question] + " (cached)"
-        top = sorted(self._simulate_results(question), key=lambda x: x["score"], reverse=True)[0]
+        q = question.strip()
+        if q in self._cache:
+            return self._cache[q] + " (cached)"
+        top = sorted(self._simulate_results(q), key=lambda x: x["score"], reverse=True)[0]
         answer = f"[v{self.VERSION}] Best: {top['title']} ({top['url']})"
-        self._cache[question] = answer
-        self.history.append({"q": question, "a": answer})
+        self._cache[q] = answer
+        self.history.append({"q": q, "a": answer})
         return answer
 
-    def ask_batch(self, questions: List[str]):
+    def ask_batch(self, questions: List[str]) -> List[str]:
         return [self.ask(q) for q in questions]
 
-    def stats(self):
-        return {"queries": len(self.history), "cached": len(self._cache)}
+    def stats(self) -> Dict:
+        return {"version": self.VERSION, "queries": len(self.history), "cached": len(self._cache)}
+
+def main():
+    ap = argparse.ArgumentParser(description="Ask Google (simulated)")
+    ap.add_argument("question", help="question to ask")
+    args = ap.parse_args()
+    agent = GoogleAskAgent()
+    print(agent.ask(args.question))
+    print(agent.stats())
+
+if __name__ == "__main__":
+    main()
