@@ -1,2 +1,1 @@
-# MuseAgentTaskRepo
-Daily Python agent experiments - sample Google ask agents, improved daily
+# MuseAgentTaskRepo\n\nDaily Python experiments: sample Google Ask agents, improved every day.\n\n## Day 1\n- v1.0 `agents/google_ask_agent.py`: simulated Google ask with cache, history, batch, stats, CLI\n\nRun: `python agents/google_ask_agent.py \"What is Python?\"`\n
