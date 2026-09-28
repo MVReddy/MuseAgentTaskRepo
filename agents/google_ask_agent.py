@@ -60,3 +60,8 @@ if __name__ == "__main__":
     def clear_cache(self):
         self._cache.clear()
         return True
+
+    def export_history(self, filepath):
+        import json
+        with open(filepath, 'w') as f:
+            json.dump(self.history, f, indent=2)
