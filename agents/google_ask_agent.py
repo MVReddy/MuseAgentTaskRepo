@@ -56,3 +56,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    def clear_cache(self):
+        self._cache.clear()
+        return True
