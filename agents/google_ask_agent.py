@@ -67,3 +67,7 @@ if __name__ == "__main__":
             json.dump(self.history, f, indent=2)
 
 # Day 2 improvement 4/10 - 2026-09-28
+
+    def ask_with_context(self, question, context=''):
+        q = f"{context} {question}".strip()
+        return self.ask(q)
