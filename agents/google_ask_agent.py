@@ -75,3 +75,6 @@ if __name__ == "__main__":
 # Day 2 improvement 6/10 - 2026-09-28
 
 # Day 2 improvement 7/10 - 2026-09-28
+
+    def __repr__(self):
+        return f"GoogleAskAgent(name={self.name!r}, queries={len(self.history)})"
