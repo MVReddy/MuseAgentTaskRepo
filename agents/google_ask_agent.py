@@ -11,7 +11,7 @@ log = logging.getLogger("ask_agent")
 
 class GoogleAskAgent:
     """A tiny daily-evolving agent for asking Google (simulated)."""
-    VERSION = "1.10.0"
+    VERSION = "1.11.0"
 
     def __init__(self, name: str = "AskAgent"):
         self.name = name
